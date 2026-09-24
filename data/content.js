@@ -1,10 +1,9 @@
-// ✏️ Edita aquí tu información. Todo el portafolio se alimenta de este archivo.
 export const perfil = {
   nombre: "Jasmin Adriana Urrutia Peña",
   corto: "Jasmin",
   rol: "Estudiante de Ingeniería de Software · 8vo ciclo · 20 años",
   titular: "Hola, soy Jasmin. Desarrollo aplicaciones web y móviles que resuelven problemas reales.",
-  foto: "/assets/yo.jpeg", // ✅ foto real
+  foto: "/assets/yo.jpeg",
 };
 
 export const sobreMi =
@@ -20,7 +19,7 @@ export const proyectos = [
       "Diseñé la base de datos relacional y desarrollé los servicios backend para gestionar postulaciones y filtrar candidatos.",
     tecnologias: ["C#", ".NET", "PostgreSQL", "Arquitectura en capas"],
     imagenes: ["/assets/jobsy.png", "/assets/jobsy2.png", "/assets/jobsy3.png"],
-    enlace: "", // 👈 opcional: link a GitHub o demo
+    enlace: "",
     color: "var(--coral)",
   },
   {
@@ -29,7 +28,7 @@ export const proyectos = [
     descripcion:
       "App móvil para la gestión predictiva de variables críticas en piscigranjas de Huancavelica.",
     logro:
-      "Validé la app con productores locales y creé una interfaz intuitiva para prevenir pérdidas de producción.",
+      "Diseñé la interfaz de la app en Figma y contribuí al desarrollo frontend para crear una experiencia intuitiva que ayuda a prevenir pérdidas de producción.",
     tecnologias: ["Flutter", "Dart", "APIs REST", "Analítica de datos"],
     imagenes: ["/assets/acuanode1.png", "/assets/acuanode2.png", "/assets/acuanode3.png"],
     enlace: "",
@@ -51,7 +50,7 @@ export const blandas = [
 ];
 
 export const datos = {
-  educacion: { titulo: "Ingeniería de Software", detalle: "Universidad (escribe el nombre) · 8vo ciclo, en curso" },
+  educacion: { titulo: "Ingeniería de Software", detalle: "Universidad Peruana de Ciencias Aplicadas · 8vo ciclo, en curso" },
   idiomas: [{ nombre: "Inglés", nivel: "Intermedio" }, { nombre: "Español", nivel: "Nativo" }],
 };
 
