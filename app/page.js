@@ -118,7 +118,7 @@ export default function Home() {
 
         {/* ── Marquee ── */}
         <div className="marquee" aria-hidden="true">
-          <div>{[0, 1].map((k) => <span key={k}>Java ✺ C# ✺ Python ✺ Scrum ✺ Vue.js ✺ Flutter ✺ .NET ✺ SQL ✺ C++ ✺ </span>)}</div>
+          <div>{[0, 1].map((k) => <span key={k}>Java ✺ C# ✺ Python ✺ Scrum ✺ Vue.js ✺ React ✺ Flutter ✺ Dart ✺ .NET ✺ SQL ✺ C++ ✺ </span>)}</div>
         </div>
 
         {/* ── Proyectos ── */}
