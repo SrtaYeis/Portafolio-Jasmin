@@ -1,62 +1,222 @@
-export const perfil = {
-  nombre: "Jasmin Adriana Urrutia Peña",
-  corto: "Jasmin",
-  rol: "Estudiante de Ingeniería de Software · 8vo ciclo · 20 años",
-  titular: "Hola, soy Jasmin. Desarrollo aplicaciones web y móviles que resuelven problemas reales.",
-  foto: "/assets/yo.jpeg",
-};
+"use client";
+import { useState, useEffect, useCallback } from "react";
+import { perfil, sobreMi, proyectos, skills, blandas, datos, contacto } from "../data/content";
 
-export const sobreMi =
-  "Tengo 20 años y estoy cursando el 8vo ciclo de Ingeniería de Software. Tengo experiencia en desarrollo front-end y back-end, aplicaciones web y Android, con una base sólida en arquitectura de software y metodologías ágiles. Me distingo por mi responsabilidad, creatividad, trabajo en equipo y aprendizaje continuo.";
+// ── Carrusel de imágenes por proyecto ──────────────────────────────────────
+function ProjectCarousel({ imagenes, nombre, color }) {
+  const [current, setCurrent] = useState(0);
+  const [animDir, setAnimDir] = useState(null); // "left" | "right"
+  const total = imagenes.length;
 
-export const proyectos = [
-  {
-    nombre: "Jobsy",
-    tipo: "Plataforma de match laboral",
-    descripcion:
-      "Aplicación web/móvil que optimiza la búsqueda de empleo y la selección de talento mediante un sistema de emparejamiento de perfiles.",
-    logro:
-      "Diseñé la base de datos relacional y desarrollé los servicios backend para gestionar postulaciones y filtrar candidatos.",
-    tecnologias: ["C#", ".NET", "PostgreSQL", "Arquitectura en capas"],
-    imagenes: ["/assets/jobsy.png", "/assets/jobsy2.png", "/assets/jobsy3.png"],
-    enlace: "",
-    color: "var(--coral)",
-  },
-  {
-    nombre: "YakuControl",
-    tipo: "Control acuícola móvil",
-    descripcion:
-      "App móvil para la gestión predictiva de variables críticas en piscigranjas de Huancavelica.",
-    logro:
-      "Diseñé la interfaz de la app en Figma y contribuí al desarrollo frontend para crear una experiencia intuitiva que ayuda a prevenir pérdidas de producción.",
-    tecnologias: ["Flutter", "Dart", "APIs REST", "Analítica de datos"],
-    imagenes: ["/assets/acuanode1.png", "/assets/acuanode2.png", "/assets/acuanode3.png"],
-    enlace: "",
-    color: "var(--mint)",
-  },
-];
+  const go = useCallback(
+    (dir) => {
+      setAnimDir(dir);
+      setCurrent((c) => (dir === "right" ? (c + 1) % total : (c - 1 + total) % total));
+    },
+    [total]
+  );
 
-export const skills = [
-  { titulo: "Lenguajes", color: "var(--coral)", items: ["Java", "C#", "C++", "Python"] },
-  { titulo: "Web", color: "var(--sun)", items: ["HTML", "CSS", "Vue.js"] },
-  { titulo: "Bases de datos", color: "var(--mint)", items: ["MySQL", "SQL Server"] },
-  { titulo: "Áreas de desarrollo", color: "var(--violet)", items: ["Ingeniería de software", "Arquitectura de software", "Desarrollo de aplicaciones", "Desarrollo Android", "Diseño de aplicaciones web", "Desarrollo front-end", "Desarrollo back-end"] },
-  { titulo: "Metodologías y herramientas", color: "var(--sky)", items: ["Scrum", "Jira", "Modelo C4", "Inteligencia artificial", "Microsoft Excel", "Microsoft Word"] },
-];
+  // Auto-advance each 4 s
+  useEffect(() => {
+    if (total <= 1) return;
+    const t = setInterval(() => go("right"), 4000);
+    return () => clearInterval(t);
+  }, [go, total]);
 
-export const blandas = [
-  "Trabajo en equipo", "Gestión de equipos", "Comunicación efectiva",
-  "Capacidad de asesorar", "Resolución de problemas",
-];
+  return (
+    <div className="carousel">
+      <div className="carousel-track" style={{ "--color": color }}>
+        <img
+          key={current}
+          src={imagenes[current]}
+          alt={`Captura ${current + 1} de ${nombre}`}
+          className={`carousel-img ${animDir ? "slide-in-" + animDir : ""}`}
+        />
+      </div>
 
-export const datos = {
-  educacion: { titulo: "Ingeniería de Software", detalle: "Universidad Peruana de Ciencias Aplicadas · 8vo ciclo, en curso" },
-  idiomas: [{ nombre: "Inglés", nivel: "Intermedio" }, { nombre: "Español", nivel: "Nativo" }],
-};
+      {total > 1 && (
+        <>
+          <button
+            className="car-btn car-btn-left"
+            aria-label="Imagen anterior"
+            onClick={() => go("left")}
+          >
+            ‹
+          </button>
+          <button
+            className="car-btn car-btn-right"
+            aria-label="Imagen siguiente"
+            onClick={() => go("right")}
+          >
+            ›
+          </button>
+          <div className="car-dots">
+            {imagenes.map((_, i) => (
+              <button
+                key={i}
+                className={`car-dot ${i === current ? "active" : ""}`}
+                aria-label={`Ir a imagen ${i + 1}`}
+                onClick={() => {
+                  setAnimDir(i > current ? "right" : "left");
+                  setCurrent(i);
+                }}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
-export const contacto = {
-  correo: "jasminurrutia30@gmail.com",
-  telefono: "+51 914022435",
-  ubicacion: "Lima, Perú",
-  github: "https://github.com/SrtaYeis",
-};
+// ── Página principal ────────────────────────────────────────────────────────
+export default function Home() {
+  return (
+    <>
+      <header className="nav">
+        <a href="#top" className="logo">{perfil.corto}</a>
+        <nav>
+          <a href="#proyectos">Proyectos</a>
+          <a href="#skills">Skills</a>
+          <a href="#contacto">Contacto</a>
+        </nav>
+      </header>
+
+      <main id="top">
+        {/* ── Hero with background blobs ── */}
+        <div className="hero-wrapper">
+          {/* Blobs */}
+          <div className="blob blob-1" aria-hidden="true" />
+          <div className="blob blob-2" aria-hidden="true" />
+          <div className="blob blob-3" aria-hidden="true" />
+          <div className="blob blob-4" aria-hidden="true" />
+          {/* Geometric shapes */}
+          <div className="deco-shapes" aria-hidden="true">
+            <div className="deco-circle deco-circle-1" />
+            <div className="deco-circle deco-circle-2" />
+            <div className="deco-circle deco-circle-3" />
+            <div className="deco-sq deco-sq-1" />
+            <div className="deco-sq deco-sq-2" />
+          </div>
+
+          <section className="hero">
+            <div className="hero-text">
+              <p className="role">{perfil.rol}</p>
+              <h1>{perfil.titular}</h1>
+              <p className="lead">{sobreMi}</p>
+              <div className="cta">
+                <a className="btn btn-main" href="#proyectos">Ver mis proyectos</a>
+                <a className="btn" href="#contacto">Contáctame</a>
+              </div>
+            </div>
+            <div className="hero-photo">
+              <img src={perfil.foto} alt={`Foto de ${perfil.corto}`} />
+              <div className="badge" aria-hidden="true">Disponible para prácticas</div>
+            </div>
+          </section>
+        </div>
+
+        {/* ── Marquee ── */}
+        <div className="marquee" aria-hidden="true">
+          <div>{[0, 1].map((k) => <span key={k}>Java ✺ C# ✺ Python ✺ Scrum ✺ Vue.js ✺ React ✺ Flutter ✺ Dart ✺ .NET ✺ SQL ✺ C++ ✺ </span>)}</div>
+        </div>
+
+        {/* ── Proyectos ── */}
+        <div className="section-wrap">
+        <section id="proyectos" className="section">
+          <h2>Proyectos destacados</h2>
+          <div className="projects">
+            {proyectos.map((p, i) => (
+              <article
+                key={p.nombre}
+                className={`project ${i % 2 ? "flip" : ""}`}
+                style={{ "--c": p.color }}
+              >
+                <div className="project-img">
+                  <ProjectCarousel
+                    imagenes={p.imagenes || (p.imagen ? [p.imagen] : ["/proyecto.svg"])}
+                    nombre={p.nombre}
+                    color={p.color}
+                  />
+                </div>
+                <div className="project-body">
+                  <h3>{p.nombre}</h3>
+                  <p className="tipo">{p.tipo}</p>
+                  <p>{p.descripcion}</p>
+                  <p><strong>Mi aporte:</strong> {p.logro}</p>
+                  <ul className="tags">{p.tecnologias.map((t) => <li key={t}>{t}</li>)}</ul>
+                  {p.enlace && <a className="btn" href={p.enlace} target="_blank" rel="noreferrer">Ver proyecto</a>}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+        </div>
+
+        {/* ── Skills ── */}
+        {/* Íconos por categoría — ajusta si agregas más grupos en content.js */}
+        <div className="section-wrap">
+        <section id="skills" className="section">
+          <h2>Conocimientos técnicos</h2>
+          <div className="skills">
+            {skills.map((g, i) => {
+              const icons = ["🖥️", "🌐", "🗄️", "🚀", "⚙️"];
+              return (
+                <div key={g.titulo} className="skill-group" style={{ "--c": g.color }}>
+                  <div className="skill-head">
+                    <span className="skill-icon">{icons[i] ?? "✦"}</span>
+                    <div className="skill-head-text">
+                      <h3>{g.titulo}</h3>
+                      <span className="skill-count">{g.items.length} habilidades</span>
+                    </div>
+                  </div>
+                  <ul>
+                    {g.items.map((s) => (
+                      <li key={s} style={{ "--c": g.color }}>{s}</li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+        </div>
+
+        {/* ── Blandas ── */}
+        <div className="section-wrap">
+        <section className="section soft">
+          <h2>Habilidades interpersonales</h2>
+          <div className="soft-inner">
+            <div className="soft-left">
+              <ul className="stickers">{blandas.map((b) => <li key={b}>{b}</li>)}</ul>
+              <div className="facts">
+                <div><h3>Educación</h3><p><strong>{datos.educacion.titulo}</strong><br />{datos.educacion.detalle}</p></div>
+                <div><h3>Idiomas</h3><p>{datos.idiomas.map((l) => <span key={l.nombre}><strong>{l.nombre}</strong>: {l.nivel}<br /></span>)}</p></div>
+              </div>
+            </div>
+            <div className="soft-photo">
+              <img src="/assets/trabajo en grupo.png" alt="Trabajo en equipo" />
+            </div>
+          </div>
+        </section>
+        </div>
+
+        {/* ── Contacto ── */}
+        <div className="section-wrap">
+        <section id="contacto" className="section contact">
+          <h2>Conversemos</h2>
+          <p className="lead">Estoy abierta a oportunidades de prácticas y colaboración profesional.</p>
+          <a className="mail" href={`mailto:${contacto.correo}`}>{contacto.correo}</a>
+          <p className="links">
+            <a href={`tel:${contacto.telefono.replace(/\s/g, "")}`}>{contacto.telefono}</a>
+            <a href={contacto.github} target="_blank" rel="noreferrer">GitHub</a>
+            <span>{contacto.ubicacion}</span>
+          </p>
+        </section>
+        </div>
+      </main>
+
+      <footer className="foot">© {new Date().getFullYear()} {perfil.nombre}</footer>
+    </>
+  );
+}
